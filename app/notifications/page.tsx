@@ -6,27 +6,37 @@ import { useSocket } from "@/components/socket-provider";
 import { Card, PageShell, Pill } from "@/components/ui";
 import type { NotificationItem } from "@/lib/socket/types";
 
+/**
+ * NotificationsPage component demonstrates "Server Push" capabilities.
+ * Unlike standard HTTP where the client must request data, the server
+ * can independently push data to the client over an active socket.
+ */
 export default function NotificationsPage() {
   const { connect, socket, status } = useSocket();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
+  // Ensure the socket is connected when entering this page
   useEffect(() => {
     if (status === "disconnected") {
       connect();
     }
   }, [connect, status]);
 
+  // Listen for unsolicited events pushed by the server
   useEffect(() => {
     if (!socket) {
       return;
     }
 
+    // Handler for new notification items
     const onNotification = (notification: NotificationItem) => {
+      // Keep only the 8 most recent notifications
       setNotifications((current) => [notification, ...current].slice(0, 8));
     };
 
     socket.on("notification:new", onNotification);
 
+    // Cleanup the listener on unmount
     return () => {
       socket.off("notification:new", onNotification);
     };
@@ -36,11 +46,14 @@ export default function NotificationsPage() {
     <PageShell>
       <Card>
         <Pill tone={status === "connected" ? "success" : "danger"}>{status}</Pill>
+        
         <h2 className="mt-4 text-3xl font-black">Server-pushed notifications</h2>
         <p className="mt-3 max-w-2xl leading-7 text-[var(--muted)]">
           No button click is needed here. The server emits a new notification on a timer, and each
           connected client receives it instantly over the existing socket connection.
         </p>
+
+        {/* List of received notifications */}
         <div className="mt-8 grid gap-4">
           {notifications.length ? (
             notifications.map((notification) => (
@@ -69,3 +82,4 @@ export default function NotificationsPage() {
     </PageShell>
   );
 }
+

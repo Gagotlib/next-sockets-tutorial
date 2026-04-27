@@ -1,6 +1,9 @@
 import type { Route } from "next";
 import Link from "next/link";
 
+/**
+ * Navigation links for the application.
+ */
 const links = [
   { href: "/", label: "Overview" },
   { href: "/connect", label: "Connect" },
@@ -9,6 +12,10 @@ const links = [
   { href: "/notifications", label: "Notifications" }
 ] as const satisfies ReadonlyArray<{ href: Route; label: string }>;
 
+/**
+ * SiteHeader component that provides consistent navigation across all pages.
+ * Includes a sticky layout with a backdrop blur for a premium look.
+ */
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-20 border-b border-black/5 bg-[rgba(249,242,230,0.88)] backdrop-blur">
@@ -35,3 +42,4 @@ export function SiteHeader() {
     </header>
   );
 }
+

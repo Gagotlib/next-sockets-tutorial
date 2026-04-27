@@ -3,6 +3,10 @@ import Link from "next/link";
 
 import { Card, PageShell, Pill } from "@/components/ui";
 
+/**
+ * Configuration for the demo cards displayed on the home page.
+ * Each card represents a different WebSocket concept.
+ */
 const demoCards = [
   {
     href: "/connect",
@@ -28,11 +32,16 @@ const demoCards = [
   href: Route;
   title: string;
   description: string;
-}>;
+ }>;
 
+/**
+ * Home page component that serves as the entry point for the tutorial.
+ * It provides an overview of the architecture and links to various demo pages.
+ */
 export default function HomePage() {
   return (
     <PageShell className="space-y-8">
+      {/* Hero section with a brief introduction */}
       <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
         <Card className="overflow-hidden bg-[linear-gradient(135deg,#fffdf8_0%,#fef0d8_45%,#ffd9b6_100%)]">
           <Pill>Teaching project</Pill>
@@ -60,6 +69,7 @@ export default function HomePage() {
           </div>
         </Card>
 
+        {/* Architectural overview explaining why a separate socket server is used */}
         <Card className="bg-[var(--surface-strong)]">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--accent-strong)]">
             Architecture
@@ -83,6 +93,7 @@ export default function HomePage() {
         </Card>
       </section>
 
+      {/* Grid of demo cards */}
       <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         {demoCards.map((card) => (
           <Link key={card.href} href={card.href}>
@@ -94,6 +105,7 @@ export default function HomePage() {
         ))}
       </section>
 
+      {/* Summary sections highlighting key learning points */}
       <section className="grid gap-6 lg:grid-cols-3">
         <Card>
           <h3 className="text-xl font-black">What this teaches</h3>
@@ -126,3 +138,4 @@ export default function HomePage() {
     </PageShell>
   );
 }
+
